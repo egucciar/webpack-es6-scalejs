@@ -23,6 +23,7 @@ module.exports = {
             {
                 loader: 'babel-loader',
                 test: path.join(__dirname, 'es6'),
+                exclude: /\.html?$/,
                 query: {
                   presets: 'es2015',
                 }
