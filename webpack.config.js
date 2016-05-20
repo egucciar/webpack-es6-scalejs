@@ -9,7 +9,8 @@ module.exports = {
             'scalejs.application': path.join(__dirname, 'es6/extensions/scalejs.application.js'),
             'scalejs.core': path.join(__dirname, 'es6/extensions/scalejs.core.js'),
             'scalejs.sandbox': path.join(__dirname, 'es6/extensions/scalejs.sandbox.js'),
-            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js')
+            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js'),
+            'scalejs.functional': path.join(__dirname, 'es6/extensions/scalejs.functional.js')
         }
     },
     output: {
@@ -24,7 +25,7 @@ module.exports = {
                 test: path.join(__dirname, 'es6'),
                 query: {
                   presets: 'es2015',
-                },
+                }
             }
         ]
     },
