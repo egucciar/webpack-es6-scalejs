@@ -6,10 +6,13 @@ A small demo project that shows how to use webpack for client-side development i
 
 * Install  [node](https://nodejs.org)
 * run `npm install`
+* run `npm install -g webpack-dev-server`
 
 ## Usage
 
-* `npm run watch` to start Webpack in watch mode - will recompile when you change a file.
-* open `index.html` in a browser. 
-* Change or add files in `es6` folder. `main.js` is the entry point.
-* Reload the browser when you have made a change.
+* `webpack-dev-server --content-base ./ --port 9966 --hot`
+* Navigate to http://localhost:9966/bundle
+* Open console to see Application Started
+* Make sure to have Source Maps enabled in browser!
+
+
