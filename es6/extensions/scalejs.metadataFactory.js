@@ -24,7 +24,12 @@ import 'extensions/scalejs.mvvm';
                 // does nothing, provide template
                 return node;
             }
-        };
+        },
+        metadataFactory = {};
+        
+    /*
+     * Metadata Creation Functions
+     */
 
     function createViewModel(node) {
         var rendered = observable(true),
@@ -120,15 +125,20 @@ import 'extensions/scalejs.mvvm';
 
         return core.mvvm.template('metadata_items_template', viewModels);
     }
-
-    function defaultViewModel(node) {
-        if(!useDefault) {
-            return;
-        }
-        return core.object.merge(node, {
-            template: 'metadata_default_template'
-        });
+    
+    function dispose(metadata) {
+        // clean up clean up everybody everywhere
+        ko.unwrap(metadata).forEach(function (node) {
+            if(node.dispose) {
+                node.dispose();
+            }
+            dispose(node.mappedChildNodes || []);
+        })
     }
+    
+    /*
+     * Default ViewModels
+     */
 
     function contextViewModel(node) {
         var newContextProps = {};
@@ -142,155 +152,37 @@ import 'extensions/scalejs.mvvm';
         });
         core.object.extend(this, newContextProps);
     }
+    
+    function defaultViewModel(node) {
+        if(!useDefault) {
+            return;
+        }
+        return core.object.merge(node, {
+            template: 'metadata_default_template'
+        });
+    }
+    
+    /*
+     * Registration Functions
+     */
 
     function registerViewModels(newViewModels) {
         core.object.extend(viewModels, newViewModels);
     }
+    
+    function getRegisteredTypes() {
+        return Object.keys(viewModels);
+    }
+    
 
     function registerIdentifiers(ids) {
         core.object.extend(identifiers, ids);
     }
-    
-    function dispose(metadata) {
-        // clean up clean up everybody everywhere
-        ko.unwrap(metadata).forEach(function (node) {
-            if(node.dispose) {
-                node.dispose();
-            }
-            dispose(node.mappedChildNodes || []);
-        })
-    }
 
-    function registerSchema(schema) {
-        for( var key in schema ){
-            // if( schemas.hasOwnProperty(key) ){
-            if (key !== '') {
-                schemas[key] = schema[key];
-            }
-        }
-    }
 
-    function generateSchema() {
-
-        //Basic schema layout for pjson
-        var schema = {
-            '$schema': 'http://json-schema.org/draft-04/schema#',
-            'definitions':{
-                'template':{'type':'string'},
-                'type':{'type':'string'},
-                'templateExt':{
-                    'oneOf':[
-                        // case where no template is provided
-                        {'not':{'required':['template']}} 
-                    ]
-                },
-                'typeExt':{
-                    'oneOf':[]
-                },
-                'children':{
-                    'type':'array',
-                    'items':{'$ref':'#/definitions/subObject'}
-                },
-                'options':{'type': 'object'},
-                'classes':{'type': 'string'},
-                'subObject':{
-                    'allOf':[
-                        {
-                            // Base properties
-                            'type':'object',
-                            'properties':{
-                                'template':{}, // makes sure template/type show up as options
-                                'type':{},
-                                'children':{'$ref':'#/definitions/children'},
-                                'options':{'$ref':'#/definitions/options'}
-                            },
-                            'required':['type']
-                        },
-                        // populates templates, types, and corresponding options
-                        {'$ref':'#/definitions/typeExt'},
-                        {'$ref':'#/definitions/templateExt'}
-                    ]
-                }
-            },
-            'oneOf': [
-                {'$ref':'#/definitions/subObject'},
-                {'type':'array','items':{'$ref':'#/definitions/subObject'}}
-            ]
-        };
-        
-        //Add all templates to the schema
-        var option;
-        var otherTemplates = [];
-        for( var key in core.mvvm.getRegisteredTemplates() ){
-            if( key !== '' ){
-                if(schemas.hasOwnProperty(key)) {
-                    // Add extended templates
-                    option = {
-                        'properties':{
-                            'template':{'enum':[key]},
-                            'options':{
-                                'type':'object',
-                                'properties':schemas[key]
-                            }
-                        },
-                        'required':['template'] // ensures matching template
-                    }
-                    schema.definitions.templateExt.oneOf.push(option);
-                }
-                else {
-                    otherTemplates.push(key);
-                }
-            }
-        }
-        if (otherTemplates.length > 0) {
-            // Add regular templates
-            schema.definitions.template.enum = otherTemplates;
-            option = {
-                'properties':{
-                    'template':{'$ref':'#/definitions/template'}
-                },
-                'required':['template'] // ensures matching template
-            }
-            schema.definitions.templateExt.oneOf.push(option);
-        }
-        
-        //Add all types to the schema
-        var otherTypes = [];
-        for( var key in viewModels ){
-            if( key !== '' ){
-                if (schemas.hasOwnProperty(key+'_template')) {
-                    // Add extended types
-                    var option = {
-                        'properties':{
-                            'type':{'enum':[key]},
-                            'options':{
-                                'type':'object',
-                                'properties': schemas[key+'_template']
-                            }
-                        }
-                    }
-                    schema.definitions.typeExt.oneOf.push(option);
-                }
-                else {
-                    otherTypes.push(key);
-                }
-            }
-        }
-        if (otherTypes.length > 0) {
-            // Add regular types
-            schema.definitions.type.enum = otherTypes;
-            option = {
-                'properties':{
-                'type':{'$ref':'#/definitions/type'}
-                }
-            }
-            schema.definitions.typeExt.oneOf.push(option);
-        }
-              
-        return schema;
-        
-    }
-
+    /*
+     * Knockout Binding
+     */
     ko.bindingHandlers.metadataFactory = {
         init: function () {
             return { controlsDescendantBindings: true };
@@ -346,23 +238,16 @@ import 'extensions/scalejs.mvvm';
 
     }
     
-    function getRegisteredTypes() {
-        return Object.keys(viewModels);
-    }
-    
-    var metadatafactory = { metadataFactory: {
-            createTemplate: createTemplate,
-            registerViewModels: registerViewModels,
-            createViewModels: createViewModels,
-            createViewModel: createViewModel,
-            useDefault: useDefault,
-            generateSchema: generateSchema,
-            registerSchema: registerSchema,
-            registerIdentifiers: registerIdentifiers,
-            getRegisteredTypes: getRegisteredTypes
-    }};
-
-    core.registerExtension(metadatafactory);
-    export default metadatafactory;
+    export default core.registerExtension({
+        metadataFactory: {
+            createTemplate,
+            registerViewModels,
+            createViewModels,
+            createViewModel,
+            useDefault,
+            registerIdentifiers,
+            getRegisteredTypes
+        }
+    })
 
 

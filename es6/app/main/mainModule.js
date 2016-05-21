@@ -16,7 +16,9 @@ sandbox.mvvm.registerTemplates(mainTemplate);
         }));  
         
         function walkGetTypes(nodes) {
-            return (nodes || []).reduce( (types, node) => types.concat([node.type]).concat(walkGetTypes(node.children)), []);
+            return (nodes || [])
+                .reduce( (types, node) => types.concat([node.type])
+                .concat(walkGetTypes(node.children)), []);
         }
         
         function resolveModule(moduleType, done) {
