@@ -1,1 +1,0 @@
-console.log('scalejs loaded but doesnt do anything');

@@ -6,9 +6,12 @@ module.exports = {
     resolve: {
         root: [__dirname, path.join(__dirname, 'es6/')],
         alias: {
-            'scalejs.application': path.join(__dirname, 'es6/extensions/scalejs.application.js'),
-            'scalejs.core': path.join(__dirname, 'es6/extensions/scalejs.core.js'),
-            'scalejs.sandbox': path.join(__dirname, 'es6/extensions/scalejs.sandbox.js'),
+            // scalejs
+            'scalejs.application': path.join(__dirname, 'node_modules/scalejs/src/scalejs.application.js'),
+            'scalejs.core': path.join(__dirname, 'node_modules/scalejs/src/scalejs.core.js'),
+            'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/src/scalejs.sandbox.js'),
+            
+            // extensions
             'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js'),
             'scalejs.functional': path.join(__dirname, 'es6/extensions/scalejs.functional.js')
         }
@@ -22,7 +25,10 @@ module.exports = {
         loaders: [
             {
                 loader: 'babel-loader',
-                test: path.join(__dirname, 'es6'),
+                test: [
+                    path.join(__dirname, 'es6'),
+                    path.join(__dirname, 'node_modules/scalejs')
+                ],
                 exclude: /\.html?$/,
                 query: {
                   presets: 'es2015',
