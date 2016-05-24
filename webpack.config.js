@@ -1,42 +1,50 @@
 var path = require('path');
 var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: ['webpack/hot/dev-server' , './es6/app/app.js'],
+    entry: ['webpack/hot/dev-server', './public/es6/app/app.js'],
     resolve: {
-        root: [__dirname, path.join(__dirname, 'es6/')],
+        root: [__dirname, path.join(__dirname, 'public/es6/')],
         alias: {
             // scalejs
+
             'scalejs.application': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.application.js'),
             'scalejs.core': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.core.js'),
             'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.sandbox.js'),
-            
+
             // extensions
-            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js')
+            'scalejs.extensions': path.join(__dirname, 'public/es6/extensions/scalejs.extensions.js')
+
         }
     },
     output: {
-        path: __dirname,
+        path: path.resolve('public'),
+        publicPath: 'public',
         filename: 'bundle.js'
     },
-    publicPath: '/es6/',
     module: {
         loaders: [
             {
                 loader: 'babel-loader',
                 test: [
-                    path.join(__dirname, 'es6')
+                    path.join(__dirname, 'public/es6')
                 ],
                 exclude: /\.html?$/,
                 query: {
                   presets: 'es2015',
                 }
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!autoprefixer-loader!sass-loader')
             }
         ]
     },
     plugins: [
         // Avoid publishing files when compilation fails
-        new webpack.NoErrorsPlugin()
+        new webpack.NoErrorsPlugin(),
+        new ExtractTextPlugin('main.css')
     ],
     stats: {
         // Nice colored output
@@ -44,4 +52,5 @@ module.exports = {
     },
     // Create Sourcemaps for the bundle
     devtool: 'source-map',
+    watch: true
 };
