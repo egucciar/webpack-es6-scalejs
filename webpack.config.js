@@ -3,7 +3,11 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-    entry: ['webpack/hot/dev-server', './public/es6/app/app.js'],
+    entry: [
+        'webpack/hot/dev-server',
+        'webpack-dev-server/client?http://localhost:8080',
+        path.resolve(__dirname, 'public/es6/app/app.js')
+    ],
     resolve: {
         root: [__dirname, path.join(__dirname, 'public/es6/')],
         alias: {
@@ -18,8 +22,8 @@ module.exports = {
         }
     },
     output: {
-        path: path.resolve('public'),
-        publicPath: 'public',
+        path: path.resolve(__dirname, 'public', 'build'),
+        publicPath: '/build/',
         filename: 'bundle.js'
     },
     module: {
@@ -44,13 +48,9 @@ module.exports = {
     plugins: [
         // Avoid publishing files when compilation fails
         new webpack.NoErrorsPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
         new ExtractTextPlugin('main.css')
     ],
-    stats: {
-        // Nice colored output
-        colors: true
-    },
     // Create Sourcemaps for the bundle
-    devtool: 'source-map',
-    watch: true
+    devtool: 'source-map'
 };
