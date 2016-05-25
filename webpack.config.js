@@ -5,16 +5,6 @@ module.exports = {
     entry: ['webpack/hot/dev-server' , './es6/app/app.js'],
     resolve: {
         root: [__dirname, path.join(__dirname, 'es6/')],
-        alias: {
-            // scalejs
-            'scalejs.application': path.join(__dirname, 'node_modules/scalejs/src/scalejs.application.js'),
-            'scalejs.core': path.join(__dirname, 'node_modules/scalejs/src/scalejs.core.js'),
-            'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/src/scalejs.sandbox.js'),
-            
-            // extensions
-            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js'),
-            'scalejs.functional': path.join(__dirname, 'es6/extensions/scalejs.functional.js')
-        }
     },
     output: {
         path: __dirname,
@@ -26,8 +16,7 @@ module.exports = {
             {
                 loader: 'babel-loader',
                 test: [
-                    path.join(__dirname, 'es6'),
-                    path.join(__dirname, 'node_modules/scalejs')
+                    path.join(__dirname, 'es6')
                 ],
                 exclude: /\.html?$/,
                 query: {
