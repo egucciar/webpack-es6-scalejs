@@ -7,13 +7,12 @@ module.exports = {
         root: [__dirname, path.join(__dirname, 'es6/')],
         alias: {
             // scalejs
-            'scalejs.application': path.join(__dirname, 'node_modules/scalejs/src/scalejs.application.js'),
-            'scalejs.core': path.join(__dirname, 'node_modules/scalejs/src/scalejs.core.js'),
-            'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/src/scalejs.sandbox.js'),
+            'scalejs.application': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.application.js'),
+            'scalejs.core': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.core.js'),
+            'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.sandbox.js'),
             
             // extensions
-            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js'),
-            'scalejs.functional': path.join(__dirname, 'es6/extensions/scalejs.functional.js')
+            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js')
         }
     },
     output: {
