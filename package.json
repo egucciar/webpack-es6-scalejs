@@ -16,9 +16,8 @@
   },
   "dependencies": {
     "html-loader": "^0.4.3",
-    "knockout": "^3.4.0",
-    "knockout.mapping": "^2.4.3",
     "lodash": "^4.12.0",
-    "scalejs": "git+https://github.com/EikosPartners/scalejs.git#es6"
+    "scalejs": "git+https://github.com/EikosPartners/scalejs.git#es6",
+    "scalejs.mvvm": "git+https://github.com/EikosPartners/scalejs.mvvm.git#develop"
   }
 }

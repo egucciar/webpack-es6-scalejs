@@ -3,7 +3,7 @@ import ko from 'knockout';
 import _ from 'lodash';
 import view from 'html!./metadataFactory.html';
 //import moment from 'moment';
-import 'extensions/scalejs.mvvm';
+import 'scalejs.mvvm';
 //import 'scalejs.expression-jsep';
     
 

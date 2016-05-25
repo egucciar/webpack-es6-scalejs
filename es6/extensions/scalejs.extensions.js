@@ -1,2 +1,2 @@
-import 'extensions/scalejs.mvvm';
+import 'scalejs.mvvm';
 import 'extensions/scalejs.metadataFactory';
