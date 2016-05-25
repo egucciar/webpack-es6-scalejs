@@ -667,8 +667,7 @@ define('scalejs.bindings/change',[
 /// <reference path="../Scripts/_references.js" />
 define('scalejs.bindings/render',[
     'scalejs.core',
-    'knockout',
-    'scalejs.functional'
+    'knockout'
 ], function (
     core,
     ko
@@ -678,9 +677,7 @@ define('scalejs.bindings/render',[
 
     var is = core.type.is,
         has = core.object.has,
-        unwrap = ko.utils.unwrapObservable,
-        continuation = core.functional.builders.continuation,
-        $DO = core.functional.builder.$DO;
+        unwrap = ko.utils.unwrapObservable;
 
     function init() {
         return { 'controlsDescendantBindings': true };
@@ -691,23 +688,16 @@ define('scalejs.bindings/render',[
         var value = unwrap(valueAccessor()),
             bindingAccessor,
             binding,
-            oldBinding,
-            inTransitions = [],
-            outTransitions = [],
             context,
             render;
 
-        function applyBindings(completed) {
+        function applyBindings() {
             if (binding) {
                 ko.applyBindingsToNode(element, binding, viewModel);
             } else {
                 ko.virtualElements.emptyNode(element);
             }
-
-            setTimeout(completed, 0);
         }
-
-        oldBinding = ko.utils.domData.get(element, 'binding');
 
         if (value) {
             if (is(value.dataClass, 'string')) {
@@ -731,15 +721,7 @@ define('scalejs.bindings/render',[
             }
         }
 
-        if (has(oldBinding, 'transitions', 'outTransitions')) {
-            outTransitions = oldBinding.transitions.outTransitions.map(function (t) { return $DO(t); });
-        }
-
-        if (has(binding, 'transitions', 'inTransitions')) {
-            inTransitions = binding.transitions.inTransitions.map(function (t) { return $DO(t); });
-        }
-
-        render = continuation.apply(null, outTransitions.concat($DO(applyBindings)).concat(inTransitions));
+        render = applyBindings;
 
         context = {
             getElement: function () {

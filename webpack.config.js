@@ -5,6 +5,15 @@ module.exports = {
     entry: ['webpack/hot/dev-server' , './es6/app/app.js'],
     resolve: {
         root: [__dirname, path.join(__dirname, 'es6/')],
+        alias: {
+            // scalejs
+            'scalejs.application': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.application.js'),
+            'scalejs.core': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.core.js'),
+            'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.sandbox.js'),
+            
+            // extensions
+            'scalejs.extensions': path.join(__dirname, 'es6/extensions/scalejs.extensions.js')
+        }
     },
     output: {
         path: __dirname,
