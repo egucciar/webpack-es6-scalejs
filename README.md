@@ -9,9 +9,13 @@ A small demo project that shows how to use webpack for client-side development i
 
 ## Usage
 
-* Run `npm run dev`
-* Navigate to http://localhost:9966/bundle
+* Run `npm start`
+* Navigate to http://localhost:3000
 * Open console to see Application Started
 * Make sure to have Source Maps enabled in browser!
+
+## Production Build
+* Run `npm run build`
+* Source files will be written to public/build
 
 
