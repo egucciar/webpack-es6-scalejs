@@ -20,10 +20,10 @@ import 'scalejs.mvvm';
         viewModels = {
             '': defaultViewModel,
             context: contextViewModel,
-            template: function (node) {
+            //template: function (node) {
                 // does nothing, provide template
-                return node;
-            }
+              //  return node;
+            //}
         },
         metadataFactory = {};
         

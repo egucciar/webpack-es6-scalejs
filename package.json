@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "html-loader": "^0.4.3",
+    "jquery": "^2.2.4",
     "lodash": "^4.12.0",
     "scalejs": "git+https://github.com/EikosPartners/scalejs.git#es6",
     "scalejs.mvvm": "git+https://github.com/EikosPartners/scalejs.mvvm.git#develop"

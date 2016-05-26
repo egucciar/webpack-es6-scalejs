@@ -56,11 +56,33 @@ sandbox.mvvm.registerTemplates(mainTemplate);
         }
         
         
-        loadMetadata({
-            type: 'template',
-            template: 'test_template',
-            name: 'Erica'
-        });
+        loadMetadata([
+            {
+                type: 'template',
+                template: 'example_children_template',
+                children: [
+                    {
+                        type: 'template',
+                        template: 'hello_template',
+                        name: 'Erica'
+                    },
+                    {
+                        type: 'template',
+                        template: 'hello_template',
+                        name: 'Jim'
+                    }
+                ]
+            },
+            {
+                type: 'template',
+                template: 'json_stringify_template',
+                message: 'This is a message that got passed',
+                endpoint: {
+                    url: 'http://jsonplaceholder.typicode.com/posts/1',
+                    type: 'get'
+                }
+            }
+        ]);
         
         window.loadMetadata = loadMetadata;
     };

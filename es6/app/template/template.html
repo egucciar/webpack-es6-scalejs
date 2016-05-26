@@ -1,0 +1,15 @@
+<div id="hello_template">
+    Hello <span data-bind="text: name"></span>. 
+</div>
+
+<div id="example_children_template">
+    I welcome my children.
+    <!-- ko template: { name: 'metadata_items_template', data: mappedChildNodes } -->
+    <!-- /ko -->
+</div>
+
+<div id="json_stringify_template">
+    <!-- ko if: data -->
+    <pre data-bind="text: JSON.stringify(data(), null, 2)"></pre>
+    <!-- /ko -->
+</div>
