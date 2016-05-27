@@ -18,6 +18,7 @@
     "html-loader": "^0.4.3",
     "lodash": "^4.12.0",
     "scalejs": "git+https://github.com/EikosPartners/scalejs.git#es6",
+    "scalejs.metadataFactory": "git://github.com/EikosPartners/scalejs.metadataFactory.git#es6",
     "scalejs.mvvm": "git+https://github.com/EikosPartners/scalejs.mvvm.git#develop"
   }
 }
