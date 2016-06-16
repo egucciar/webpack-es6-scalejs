@@ -1,5 +1,13 @@
 <div id="main_template">
     Hello World I am a es6/webpack Scalejs Application!
+
+    These are the modules you have access to:
+    <!-- ko foreach: modules -->
+     <span data-bind="text: $data + ' ', click: function () {
+         resolveModule($data);
+     }"></span>
+     <!--/ko-->
+
     <div data-bind="metadataFactory: metadata"></div>
 </div>
 

@@ -3,9 +3,11 @@ import sandbox from 'scalejs.sandbox';
 import mainTemplate from 'html!./main.html';
 import _ from 'lodash';
 import '../../../sass/main.scss';
-import { resolveModule } from '../../moduleLoader';
+import 'moduleLoader'
 
-console.log(resolveModule);
+window.resolveModule = function (type, done) {
+    sandbox.moduleLoader.resolveModule(type, done)
+}
 
 sandbox.mvvm.registerTemplates(mainTemplate);
 
@@ -16,7 +18,8 @@ sandbox.mvvm.registerTemplates(mainTemplate);
             metadata = sandbox.mvvm.observable({}); // needs to be initialized or currently throws exception
 
         root(template('main_template', {
-            metadata: metadata
+            metadata: metadata,
+            modules: sandbox.moduleLoader.modules
         }));
 
         function walkGetTypes(nodes) {
@@ -56,11 +59,6 @@ sandbox.mvvm.registerTemplates(mainTemplate);
                 type: 'template',
                 template: 'test_template',
                 name: 'Erica'
-            },
-            {
-                type: 'dynamic',
-                template: 'dynamic_template',
-                id: 'Zach'
             }
         ]);
 
