@@ -3,6 +3,9 @@ import sandbox from 'scalejs.sandbox';
 import mainTemplate from 'html!./main.html';
 import _ from 'lodash';
 import '../../../sass/main.scss';
+import { resolveModule } from '../../moduleLoader';
+
+console.log(resolveModule);
 
 sandbox.mvvm.registerTemplates(mainTemplate);
 
@@ -22,15 +25,6 @@ sandbox.mvvm.registerTemplates(mainTemplate);
                 .concat(walkGetTypes(node.children)), []);
         }
 
-        function resolveModule(moduleType, done) {
-            switch (moduleType) {
-                case 'dynamic':
-                    require.ensure([], function (require) {
-                        require('../dynamic/dynamicModule.js').default();
-                        done();
-                    });
-            }
-        }
         function loadMetadata(md) {
             // first, walk through metadata to gather all types
             var types = _.uniq(walkGetTypes(Array.isArray(md) ? md : [md])).filter(function (type) {
@@ -57,11 +51,18 @@ sandbox.mvvm.registerTemplates(mainTemplate);
         }
 
 
-        loadMetadata({
-            type: 'template',
-            template: 'test_template',
-            name: 'Erica'
-        });
+        loadMetadata([
+            {
+                type: 'template',
+                template: 'test_template',
+                name: 'Erica'
+            },
+            {
+                type: 'dynamic',
+                template: 'dynamic_template',
+                id: 'Zach'
+            }
+        ]);
 
         window.loadMetadata = loadMetadata;
     };

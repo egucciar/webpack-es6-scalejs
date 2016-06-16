@@ -6,10 +6,10 @@ module.exports = {
     entry: [
         'webpack/hot/dev-server',
         'webpack-dev-server/client?http://localhost:8081',
-        path.resolve(__dirname, 'public/es6/app/app.js')
+        path.resolve(__dirname, 'public/src/app/app.js')
     ],
     resolve: {
-        root: [__dirname, path.join(__dirname, 'public/es6/')],
+        root: [__dirname, path.join(__dirname, 'public/src/')],
         alias: {
             // scalejs
 
@@ -18,7 +18,7 @@ module.exports = {
             'scalejs.sandbox': path.join(__dirname, 'node_modules/scalejs/dist/scalejs.sandbox.js'),
 
             // extensions
-            'scalejs.extensions': path.join(__dirname, 'public/es6/extensions/scalejs.extensions.js')
+            'scalejs.extensions': path.join(__dirname, 'public/src/extensions/scalejs.extensions.js')
 
         }
     },
@@ -32,7 +32,7 @@ module.exports = {
             {
                 loader: 'babel-loader',
                 test: [
-                    path.join(__dirname, 'public/es6')
+                    path.join(__dirname, 'public/src')
                 ],
                 exclude: /\.html?$/,
                 query: {
