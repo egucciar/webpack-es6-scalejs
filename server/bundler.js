@@ -1,15 +1,14 @@
 var webpack = require('webpack');
-var webpackDevServer = require('webpack-dev-server');
 var webpackConfig = require('./../webpack.config.js');
 var path = require('path');
 var fs = require('fs');
 
-module.exports = function () {
+module.exports = function (app) {
     var bundleStart = null;
     var compiler = webpack(webpackConfig);
 
     compiler.plugin('compile', function() {
-        bundleStart = Date.now()
+        bundleStart = Date.now();
         console.log('building... ',bundleStart);
     });
 
@@ -17,17 +16,17 @@ module.exports = function () {
         console.log('building complete in ', Date.now() - bundleStart);
     });
 
-    var bundler = new webpackDevServer(compiler, {
-        publicPath: '/build/',
+    app.use(require("webpack-dev-middleware")(compiler, {
+        publicPath: webpackConfig.output.publicPath,
         hot: true,
         quiet: false,
         noInfo: false,
         stats: {
             colors: true
         }
-    });
+    }));
 
-    bundler.listen(8081, 'localhost', function () {
-        console.log('bundling project, please wait...');
-    });
-}
+    app.use(require("webpack-hot-middleware")(compiler,  {
+        log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
+    }));
+};

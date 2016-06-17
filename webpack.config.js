@@ -3,9 +3,9 @@ var webpack = require('webpack');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
+    context: path.join(__dirname, 'public'),
     entry: [
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8081',
+        'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
         path.resolve(__dirname, 'public/src/app/app.js')
     ],
     resolve: {
@@ -23,7 +23,7 @@ module.exports = {
         }
     },
     output: {
-        path: path.resolve(__dirname, 'public', 'build'),
+        path: __dirname,
         publicPath: '/build/',
         filename: 'bundle.js'
     },
@@ -47,8 +47,9 @@ module.exports = {
     },
     plugins: [
         // Avoid publishing files when compilation fails
-        new webpack.NoErrorsPlugin(),
+        new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin(),
         new ExtractTextPlugin('main.css')
     ],
     // Create Sourcemaps for the bundle
